@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="IMU-one-connection-urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.010494 0.008044 0.012091"
+        rpy="0 0 0" />
+      <mass
+        value="0.35654" />
+      <inertia
+        ixx="0.00064889"
+        ixy="2.8947E-05"
+        ixz="-2.959E-05"
+        iyy="0.00078221"
+        iyz="-1.603E-06"
+        izz="0.0013158" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="level-1-gear">
+    <inertial>
+      <origin
+        xyz="0.013587 -0.0056429 0.094341"
+        rpy="0 0 0" />
+      <mass
+        value="0.080761" />
+      <inertia
+        ixx="4.6616E-05"
+        ixy="9.2204E-06"
+        ixz="-3.4092E-06"
+        iyy="6.3656E-05"
+        iyz="1.493E-06"
+        izz="4.7367E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-1-gear.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-1-gear.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="level-1-gear-rev"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="level-1-gear" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="level-1-blue-link-bottom">
+    <inertial>
+      <origin
+        xyz="-0.043902 -0.01287 0.028036"
+        rpy="0 0 0" />
+      <mass
+        value="0.02334" />
+      <inertia
+        ixx="1.4695E-05"
+        ixy="4.1327E-06"
+        ixz="1.5846E-05"
+        iyy="3.5763E-05"
+        iyz="-2.5484E-06"
+        izz="2.6462E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-1-blue-link-bottom.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-1-blue-link-bottom.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="level-1-blue-link-bottom-rev"
+    type="revolute">
+    <origin
+      xyz="0.082963 -0.036024 0.14008"
+      rpy="0 0 0" />
+    <parent
+      link="level-1-gear" />
+    <child
+      link="level-1-blue-link-bottom" />
+    <axis
+      xyz="-0.64772 0.28365 0.70711" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="top-plate-link-hand-1">
+    <inertial>
+      <origin
+        xyz="0.010671 0.038994 0.010481"
+        rpy="0 0 0" />
+      <mass
+        value="0.021991" />
+      <inertia
+        ixx="7.722E-06"
+        ixy="6.6298E-13"
+        ixz="4.3689E-12"
+        iyy="7.722E-06"
+        iyz="7.4372E-12"
+        izz="1.499E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/top-plate-link-hand-1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/top-plate-link-hand-1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="top-plate-link-hand-1-rev"
+    type="revolute">
+    <origin
+      xyz="-0.093634 -0.0026632 0.053033"
+      rpy="0 0 0" />
+    <parent
+      link="level-1-blue-link-bottom" />
+    <child
+      link="top-plate-link-hand-1" />
+    <axis
+      xyz="0.40114 0.91602 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="level-2-gear">
+    <inertial>
+      <origin
+        xyz="-0.0027259 0.0248 0.10006"
+        rpy="0 0 0" />
+      <mass
+        value="0.05027" />
+      <inertia
+        ixx="4.2669E-05"
+        ixy="3.3189E-06"
+        ixz="7.8807E-07"
+        iyy="1.3216E-05"
+        iyz="-7.081E-06"
+        izz="5.0056E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-2-gear.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-2-gear.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="level-2-gear-rev"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="level-2-gear" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="level-2-blue-link-bottom">
+    <inertial>
+      <origin
+        xyz="0.033097 -0.031585 0.028036"
+        rpy="0 0 0" />
+      <mass
+        value="0.02334" />
+      <inertia
+        ixx="3.4075E-05"
+        ixy="7.0566E-06"
+        ixz="-5.7159E-06"
+        iyy="1.6383E-05"
+        iyz="1.4997E-05"
+        izz="2.6462E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-2-blue-link-bottom.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-2-blue-link-bottom.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="level-2-blue-link-bottom-rev"
+    type="revolute">
+    <origin
+      xyz="-0.010018 0.090321 0.14008"
+      rpy="0 0 0" />
+    <parent
+      link="level-2-gear" />
+    <child
+      link="level-2-blue-link-bottom" />
+    <axis
+      xyz="0.078213 -0.70277 0.70711" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="level-3-gear">
+    <inertial>
+      <origin
+        xyz="-0.021472 -0.015495 0.10403"
+        rpy="0 0 0" />
+      <mass
+        value="0.047184" />
+      <inertia
+        ixx="2.9339E-05"
+        ixy="-1.6846E-05"
+        ixz="9.6986E-06"
+        iyy="3.9833E-05"
+        iyz="7.1375E-06"
+        izz="5.7783E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-3-gear.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-3-gear.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="level-3-gear-rev"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="level-3-gear" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="level-3-blue-link-bottom">
+    <inertial>
+      <origin
+        xyz="0.010805 0.044455 0.028036"
+        rpy="0 0 0" />
+      <mass
+        value="0.02334" />
+      <inertia
+        ixx="2.6917E-05"
+        ixy="-1.1189E-05"
+        ixz="-1.013E-05"
+        iyy="2.3541E-05"
+        iyz="-1.2449E-05"
+        izz="2.6462E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-3-blue-link-bottom.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.62745 0.62745 0.62745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://IMU-one-connection-urdf/meshes/level-3-blue-link-bottom.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="level-3-blue-link-bottom-rev"
+    type="revolute">
+    <origin
+      xyz="-0.072945 -0.053375 0.14008"
+      rpy="0 0 0" />
+    <parent
+      link="level-3-gear" />
+    <child
+      link="level-3-blue-link-bottom" />
+    <axis
+      xyz="0.56951 0.41912 0.70711" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>

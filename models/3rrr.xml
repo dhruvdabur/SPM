@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  3RRR Spherical Parallel Manipulator (closed-loop)
+  
+  Kinematic tree (MuJoCo body tree):
+    worldbody
+      ├── base_link
+      │     ├── level-1-gear  (q1 hinge, axis 0 0 -1)
+      │     │     └── level-1-blue-link-bottom  (revolute)
+      │     │           └── site: blue_1_top
+      │     ├── level-2-gear  (q2 hinge, axis 0 0 -1)
+      │     │     └── level-2-blue-link-bottom  (revolute)
+      │     │           └── site: blue_2_top
+      │     └── level-3-gear  (q3 hinge, axis 0 0 -1)
+      │           └── level-3-blue-link-bottom  (revolute)
+      │                 └── site: blue_3_top
+      └── top_plate  (freejoint, 6-DOF)
+            ├── site: plate_joint_1
+            ├── site: plate_joint_2
+            └── site: plate_joint_3
+  
+  Closed-loop via equality constraints:
+    blue_1_top ←connect→ plate_joint_1
+    blue_2_top ←connect→ plate_joint_2
+    blue_3_top ←connect→ plate_joint_3
+    
+  Coordinates taken directly from SolidWorks URDF export.
+-->
+
+<mujoco model="3RRR_SPM">
+
+  <compiler angle="radian"
+            meshdir="../IMU-one-connection-urdf/meshes"
+            strippath="true"/>
+
+  <option timestep="0.002"
+          gravity="0 0 -9.81"
+          integrator="implicitfast"/>
+
+  <visual>
+    <headlight ambient="0.4 0.4 0.4"
+              diffuse="0.8 0.8 0.8"
+              specular="0.2 0.2 0.2"/>
+  </visual>
+
+
+  <!-- ====================================================== -->
+  <!-- MESHES & MATERIALS                                      -->
+  <!-- ====================================================== -->
+
+  <asset>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge"
+             rgb1="0.2 0.3 0.4" rgb2="0.1 0.15 0.2" markrgb="0.8 0.8 0.8"
+             width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true"
+              texrepeat="5 5" reflectance="0.2"/>
+
+    <material name="base_mat"   rgba="0.62 0.62 0.62 1"/>
+    <material name="gear_mat"   rgba="0.9  0.2  0.2  1"/>
+    <material name="blue_mat"   rgba="0.05 0.25 0.9  1"/>
+    <material name="plate_mat"  rgba="0.2  0.8  0.2  1"/>
+
+    <mesh name="base_link"                file="base_link.STL"/>
+    <mesh name="level-1-gear"             file="level-1-gear.STL"/>
+    <mesh name="level-1-blue-link-bottom" file="level-1-blue-link-bottom.STL"/>
+    <mesh name="top-plate-link-hand-1"    file="top-plate-link-hand-1.STL"/>
+    <mesh name="level-2-gear"             file="level-2-gear.STL"/>
+    <mesh name="level-2-blue-link-bottom" file="level-2-blue-link-bottom.STL"/>
+    <mesh name="level-3-gear"             file="level-3-gear.STL"/>
+    <mesh name="level-3-blue-link-bottom" file="level-3-blue-link-bottom.STL"/>
+  </asset>
+
+
+  <!-- ====================================================== -->
+  <!-- WORLD                                                   -->
+  <!-- ====================================================== -->
+
+  <worldbody>
+
+    <light name="top_light" pos="0 0 1" dir="0 0 -1" directional="true"/>
+    <geom name="floor" type="plane" size="0.5 0.5 0.01" material="groundplane"/>
+
+
+    <!-- ================================================== -->
+    <!-- BASE LINK (fixed to world)                          -->
+    <!-- ================================================== -->
+
+    <body name="base_link" pos="0 0 0.05">
+
+      <geom type="mesh" mesh="base_link" material="base_mat"/>
+
+
+      <!-- ================================================ -->
+      <!-- BRANCH 1: gear → blue link                       -->
+      <!-- Joint origin at (0, 0, 0) relative to base       -->
+      <!-- ================================================ -->
+
+      <body name="level-1-gear" pos="0 0 0">
+
+        <inertial pos="0.013587 -0.0056429 0.094341"
+                  mass="0.080761"
+                  fullinertia="4.6616e-05 6.3656e-05 4.7367e-05
+                               9.2204e-06 -3.4092e-06 1.493e-06"/>
+
+        <joint name="q1" type="hinge" axis="0 0 -1" damping="0.05"/>
+
+        <geom type="mesh" mesh="level-1-gear" material="gear_mat"/>
+
+        <!-- Blue link 1: offset from gear by (0.082963, -0.036024, 0.14008) -->
+        <body name="level-1-blue-link-bottom" pos="0.082963 -0.036024 0.14008">
+
+          <inertial pos="-0.043902 -0.01287 0.028036"
+                    mass="0.02334"
+                    fullinertia="1.4695e-05 3.5763e-05 2.6462e-05
+                                 4.1327e-06 1.5846e-05 -2.5484e-06"/>
+
+          <joint name="blue1_rev" type="hinge" axis="-0.64772 0.28365 0.70711"/>
+
+          <geom type="mesh" mesh="level-1-blue-link-bottom" material="blue_mat"/>
+
+          <!-- Top attachment site: where top-plate-link-hand-1 connects -->
+          <!-- Offset from blue link: (-0.093634, -0.0026632, 0.053033) -->
+          <site name="blue_1_top"
+                pos="-0.093634 -0.0026632 0.053033"
+                size="0.005" rgba="0 1 0 1"/>
+
+        </body>
+      </body>
+
+
+      <!-- ================================================ -->
+      <!-- BRANCH 2: gear → blue link                       -->
+      <!-- Joint origin at (0, 0, 0) relative to base       -->
+      <!-- ================================================ -->
+
+      <body name="level-2-gear" pos="0 0 0">
+
+        <inertial pos="-0.0027259 0.0248 0.10006"
+                  mass="0.05027"
+                  fullinertia="4.2669e-05 1.3216e-05 5.0056e-05
+                               3.3189e-06 7.8807e-07 -7.081e-06"/>
+
+        <joint name="q2" type="hinge" axis="0 0 -1" damping="0.05"/>
+
+        <geom type="mesh" mesh="level-2-gear" material="gear_mat"/>
+
+        <!-- Blue link 2: offset from gear by (-0.010018, 0.090321, 0.14008) -->
+        <body name="level-2-blue-link-bottom" pos="-0.010018 0.090321 0.14008">
+
+          <inertial pos="0.033097 -0.031585 0.028036"
+                    mass="0.02334"
+                    fullinertia="3.4075e-05 1.6383e-05 2.6462e-05
+                                 7.0566e-06 -5.7159e-06 1.4997e-05"/>
+
+          <joint name="blue2_rev" type="hinge" axis="0.078213 -0.70277 0.70711"/>
+
+          <geom type="mesh" mesh="level-2-blue-link-bottom" material="blue_mat"/>
+
+          <!-- Top attachment site (estimated from URDF symmetry) -->
+          <site name="blue_2_top"
+                pos="0.049123 -0.079758 0.053033"
+                size="0.005" rgba="0 1 0 1"/>
+
+        </body>
+      </body>
+
+
+      <!-- ================================================ -->
+      <!-- BRANCH 3: gear → blue link                       -->
+      <!-- Joint origin at (0, 0, 0) relative to base       -->
+      <!-- ================================================ -->
+
+      <body name="level-3-gear" pos="0 0 0">
+
+        <inertial pos="-0.021472 -0.015495 0.10403"
+                  mass="0.047184"
+                  fullinertia="2.9339e-05 3.9833e-05 5.7783e-05
+                               -1.6846e-05 9.6986e-06 7.1375e-06"/>
+
+        <joint name="q3" type="hinge" axis="0 0 -1" damping="0.05"/>
+
+        <geom type="mesh" mesh="level-3-gear" material="gear_mat"/>
+
+        <!-- Blue link 3: offset from gear by (-0.072945, -0.053375, 0.14008) -->
+        <body name="level-3-blue-link-bottom" pos="-0.072945 -0.053375 0.14008">
+
+          <inertial pos="0.010805 0.044455 0.028036"
+                    mass="0.02334"
+                    fullinertia="2.6917e-05 2.3541e-05 2.6462e-05
+                                 -1.1189e-05 -1.013e-05 -1.2449e-05"/>
+
+          <joint name="blue3_rev" type="hinge" axis="0.56951 0.41912 0.70711"/>
+
+          <geom type="mesh" mesh="level-3-blue-link-bottom" material="blue_mat"/>
+
+          <!-- Top attachment site (estimated from URDF symmetry) -->
+          <site name="blue_3_top"
+                pos="0.044511 0.082421 0.053033"
+                size="0.005" rgba="0 1 0 1"/>
+
+        </body>
+      </body>
+
+    </body>
+
+
+    <!-- ================================================== -->
+    <!-- COMMON TOP PLATE (free-floating, top-level body)    -->
+    <!-- Constrained to blue link endpoints via <connect>    -->
+    <!-- ================================================== -->
+
+    <!-- Zero-angle pose: plate_joint_1 coincides with blue_1_top. -->
+    <body name="top_plate" pos="-0.010671 -0.0386872 0.243113">
+
+      <freejoint name="top_plate_free"/>
+
+      <inertial pos="0.010671 0.038994 0.010481"
+                mass="0.021991"
+                fullinertia="7.722e-06 7.722e-06 1.499e-05
+                             6.6298e-13 4.3689e-12 7.4372e-12"/>
+
+      <geom type="mesh" mesh="top-plate-link-hand-1" material="plate_mat"/>
+
+      <!-- Connection sites on the top plate -->
+      <site name="plate_joint_1" pos="0 0 0"
+            size="0.0048" rgba="1 1 0 1"/>
+
+      <site name="plate_joint_2" pos="0.049776 0.049250 0"
+            size="0.0048" rgba="1 1 0 1"/>
+
+      <site name="plate_joint_3" pos="-0.017763 0.067733 0"
+            size="0.0048" rgba="1 1 0 1"/>
+
+    </body>
+
+  </worldbody>
+
+
+  <!-- ====================================================== -->
+  <!-- CLOSED-LOOP EQUALITY CONSTRAINTS                        -->
+  <!-- ====================================================== -->
+
+  <equality>
+    <connect name="close_loop_1" site1="blue_1_top" site2="plate_joint_1"
+             solref="0.002 1" solimp="0.99 0.999 0.001"/>
+    <connect name="close_loop_2" site1="blue_2_top" site2="plate_joint_2"
+             solref="0.002 1" solimp="0.99 0.999 0.001"/>
+    <connect name="close_loop_3" site1="blue_3_top" site2="plate_joint_3"
+             solref="0.002 1" solimp="0.99 0.999 0.001"/>
+  </equality>
+
+
+  <!-- ====================================================== -->
+  <!-- ACTUATORS (position servos on the 3 input gears)        -->
+  <!-- ====================================================== -->
+
+  <actuator>
+    <position name="motor_1" joint="q1" kp="10"/>
+    <position name="motor_2" joint="q2" kp="10"/>
+    <position name="motor_3" joint="q3" kp="10"/>
+  </actuator>
+
+</mujoco>

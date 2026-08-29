@@ -1,0 +1,15 @@
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+
+# Editor-generated databases and locks
+**/.vscode/*.db
+**/.vscode/*.db-*
+**/.vscode/*.lock
+
+# MuJoCo and runtime-generated output
+MJDATA.TXT
+MJMODEL.TXT
+MUJOCO_LOG.TXT
+log/
