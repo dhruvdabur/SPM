@@ -35,7 +35,8 @@ class Controller:
         angles = np.asarray(values, dtype=float)
         if not np.isfinite(angles).all() or np.any(np.abs(angles) > [180, 20, 20]):
             raise ValueError('Limits: yaw ±180°, pitch and roll ±20°.')
-        result = self.solver.solve(*np.deg2rad(angles))
+        # Website yaw runs clockwise viewed from +Z; IK uses right-handed yaw.
+        result = self.solver.solve(*np.deg2rad(angles * [-1, 1, 1]))
         if self.node:
             from sensor_msgs.msg import JointState
             from std_msgs.msg import Float64MultiArray

@@ -34,7 +34,7 @@ class WebTests(unittest.TestCase):
     def test_command_and_state(self):
         result = self.post({'yaw':10, 'pitch':5, 'roll':3})
         self.assertEqual(result['ypr_degrees'], [10,5,3])
-        self.assertAlmostEqual(result['joint_degrees'][0], -5.536645, places=5)
+        self.assertTrue(np.isfinite(result['joint_radians']).all())
         self.assertEqual(json.load(urlopen(self.url+'/api/state')), result)
         self.assertIn(b'joystick', urlopen(self.url).read())
 
@@ -49,14 +49,14 @@ class WebTests(unittest.TestCase):
     def test_browser_command_moves_physics_and_returns_home(self):
         sim = Simulation()
         receiver = WebCommands(self.url)
-        for ypr in ([10, 5, 3], [0, 0, 0]):
+        for ypr in ([10, 5, 3], [-10, 5, 3], [0, 0, 0]):
             self.post(dict(zip(('yaw', 'pitch', 'roll'), ypr)))
             sim.set_target(receiver.poll())
             for _ in range(3000):
                 sim.step()
             mujoco.mj_forward(sim.model, sim.data)
             actual = Rotation.from_matrix(sim.data.body('top_plate').xmat.reshape(3, 3))
-            expected = Rotation.from_euler('ZYX', ypr, degrees=True)
+            expected = Rotation.from_euler('ZYX', [-ypr[0], ypr[1], ypr[2]], degrees=True)
             self.assertLess((actual * expected.inv()).magnitude(), 1e-4)
             self.assertEqual(sum(w.number for w in sim.data.warning), 0)
 

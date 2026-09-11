@@ -44,13 +44,13 @@ async function initialize() {
   try { const response=await fetch('/api/state'); if(!response.ok)throw new Error('Connection failed'); const state=await response.json(); showState(state); axes.forEach((a,i)=>target[a]=state.ypr_degrees[i]); refresh(); }
   catch(e) { $('connection').textContent='○ Offline'; $('status').textContent='Start python web_control.py, then reload this page.'; }
 }
-// Lightweight projected schematic. Rotation is the same ZYX convention as IK.
+// ZYX schematic with clockwise website yaw, matching the web API mapping.
 function draw() {
   const canvas=$('preview'), ctx=canvas.getContext('2d'), box=canvas.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
   canvas.width=Math.round(box.width*dpr); canvas.height=Math.round(box.height*dpr); ctx.scale(dpr,dpr);
   const w=box.width,h=box.height,scale=Math.min(w/3.2,h/2.8);
   const project=([x,y,z])=>[w/2+scale*(.87*x-.5*y),h*.7+scale*(.25*x+.43*y-.95*z)];
-  const rotate=p=>{let [x,y,z]=p; const [a,b,c]=axes.map(k=>target[k]*Math.PI/180); [y,z]=[Math.cos(c)*y-Math.sin(c)*z,Math.sin(c)*y+Math.cos(c)*z]; [x,z]=[Math.cos(b)*x+Math.sin(b)*z,-Math.sin(b)*x+Math.cos(b)*z];return [Math.cos(a)*x-Math.sin(a)*y,Math.sin(a)*x+Math.cos(a)*y,z+1];};
+  const rotate=p=>{let [x,y,z]=p; const [a,b,c]=[-target.yaw,target.pitch,target.roll].map(v=>v*Math.PI/180); [y,z]=[Math.cos(c)*y-Math.sin(c)*z,Math.sin(c)*y+Math.cos(c)*z]; [x,z]=[Math.cos(b)*x+Math.sin(b)*z,-Math.sin(b)*x+Math.cos(b)*z];return [Math.cos(a)*x-Math.sin(a)*y,Math.sin(a)*x+Math.cos(a)*y,z+1];};
   function line(points,color,width=1,fill=null){ctx.beginPath();points.map(project).forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); if(fill){ctx.closePath();ctx.fillStyle=fill;ctx.fill();}ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}
   for(let i=-4;i<=4;i++){line([[i/3,-1.4,0],[i/3,1.4,0]],'#293946');line([[-1.4,i/3,0],[1.4,i/3,0]],'#293946');}
   const base=[], top=[];

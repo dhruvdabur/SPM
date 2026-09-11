@@ -136,6 +136,10 @@ are degrees. Release holds the selected tilt. The sliders also support
 keyboard control. Turn off **Send while moving** to compose a pose, then
 click **Send target**. **Return to zero** always sends a zero target.
 
+Positive website yaw turns clockwise when viewed from above (+Z). The web API
+maps `[yaw, pitch, roll]` to IK `[-yaw, pitch, roll]`, and the preview uses the
+same mapping. The CLI and `/platform_ypr` retain their right-handed IK convention.
+
 In a second terminal, run the live simulation:
 
 ```bash
