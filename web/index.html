@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Orbit / 3RRR control</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><a class="brand" href="/">◉ <b>ORBIT</b><span> / 3RRR</span></a><span class="connection" id="connection">Connecting…</span></header>
+<main>
+<div class="intro"><div><p class="eyebrow">SPHERICAL PARALLEL MANIPULATOR</p><h1>A new point of view.</h1><p class="muted">Steer the platform. Explore its orientation.</p></div><button id="home" class="secondary">↺ Return to zero</button></div>
+<div class="workspace">
+<section class="card preview"><div class="card-head"><h2>Platform orientation</h2><span class="tag">TARGET PREVIEW</span></div><div class="preview-viewport"><canvas id="preview" aria-label="Schematic preview of requested platform orientation"></canvas></div><div class="axis-key"><span><i class="pink"></i>X / Roll</span><span><i class="green"></i>Y / Pitch</span><span><i class="blue"></i>Z / Yaw</span></div><p class="small muted">Orientation schematic · not simulation feedback</p></section>
+<section class="card control"><div class="card-head"><h2>Orientation control</h2><span class="tag">DEGREES</span></div>
+<div class="joystick-wrap"><span class="north">+ PITCH</span><span class="west">− ROLL</span><div id="joystick" role="group" aria-label="Pitch and roll joystick"><div class="ring"></div><div class="cross horizontal"></div><div class="cross vertical"></div><div id="stick"></div></div><span class="east">+ ROLL</span><span class="south">− PITCH</span></div>
+<p class="hint">Drag to tilt · release to hold</p>
+<div class="sliders">
+<label for="yaw">Yaw <output id="yaw-value">0.0°</output></label><input id="yaw" type="range" min="-180" max="180" step="0.1" value="0"><div class="ends"><span>−180°</span><span>180°</span></div>
+<div class="fine"><div><label for="pitch">Pitch <output id="pitch-value">0.0°</output></label><input id="pitch" type="range" min="-20" max="20" step="0.1" value="0"></div><div><label for="roll">Roll <output id="roll-value">0.0°</output></label><input id="roll" type="range" min="-20" max="20" step="0.1" value="0"></div></div>
+</div><div class="send-row"><label class="toggle"><input id="live" type="checkbox" checked> Send while moving</label><button id="send">Send target ↗</button></div>
+</section>
+</div>
+<section class="results"><div><p class="eyebrow">INVERSE KINEMATICS</p><h2>Joint targets</h2><p id="status" role="status">Waiting for a target.</p></div><div class="joint"><span>01 / q1</span><strong id="q1">—</strong><small id="r1">— rad</small></div><div class="joint"><span>02 / q2</span><strong id="q2">—</strong><small id="r2">— rad</small></div><div class="joint"><span>03 / q3</span><strong id="q3">—</strong><small id="r3">— rad</small></div></section>
+<footer><span id="mode">Local IK · checking connection</span><span>Yaw → Pitch → Roll / ZYX</span></footer>
+</main><script src="/app.js"></script>
+</body></html>
